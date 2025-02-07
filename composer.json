@@ -1,5 +1,5 @@
 {
-    "name": "j-webb/laravel-unleash",
+    "name": "huddlebv/laravel-unleash",
     "description": "An Unleash client for Laravel",
     "type": "library",
     "require": {
@@ -21,6 +21,10 @@
         {
             "name": "Jonathan Webb",
             "email": "jonwebb247@gmail.com"
+        },
+        {
+            "name": "Wessel Verheij",
+            "email": "wessel@plugandpay.com"
         }
     ],
     "minimum-stability": "dev",
