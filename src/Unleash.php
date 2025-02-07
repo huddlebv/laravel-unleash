@@ -2,6 +2,10 @@
 
 namespace JWebb\Unleash;
 
+use Exception;
+use Illuminate\Support\Facades\Log;
+use ReflectionException;
+use ReflectionProperty;
 use Unleash\Client\Configuration\Context;
 use Unleash\Client\DTO\Feature;
 use Unleash\Client\DTO\Variant;
@@ -40,9 +44,15 @@ class Unleash implements UnleashClient
      */
     public function isEnabled(string $featureName, ?Context $context = null, bool $default = false): bool
     {
+        if (! config('unleash.enabled')) {
+            Log::debug('Unleash is disabled, returning disabled state for feature');
+
+            return false;
+        }
+
         try {
             return $this->client->isEnabled($featureName, $context, $default);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $default;
         }
     }
@@ -52,10 +62,15 @@ class Unleash implements UnleashClient
      * @param  bool  $onlyEnabled
      * @param  Context|null  $context
      * @return array
-     * @throws \ReflectionException
      */
     public function getFeatures(bool $onlyEnabled = false, ?Context $context = null): array
     {
+        if (! config('unleash.enabled')) {
+            Log::debug('Unleash is disabled, returning empty list of features');
+
+            return [];
+        }
+
         try {
             $features = $this->getRepository()->getFeatures();
 
@@ -72,15 +87,17 @@ class Unleash implements UnleashClient
             }) : $mappedFeatures;
 
             return $toggles;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            Log::error('Error getting features from Unleash', ['error' => $e->getMessage()]);
+
             return [];
         }
     }
 
     /**
-     * @param  string  $featureName
-     * @param  Context|null  $context
-     * @param  Variant|null  $fallbackVariant
+     * @param string $featureName
+     * @param Context|null $context
+     * @param Variant|null $fallbackVariant
      * @return Variant
      */
     public function getVariant(string $featureName, ?Context $context = null, ?Variant $fallbackVariant = null): Variant
@@ -97,12 +114,11 @@ class Unleash implements UnleashClient
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function getRepository(): UnleashRepository
     {
-        $reflectionProperty = new \ReflectionProperty(get_class($this->client), 'repository');
-        $reflectionProperty->setAccessible(true);
+        $reflectionProperty = new ReflectionProperty(get_class($this->client), 'repository');
 
         return $reflectionProperty->getValue($this->client);
     }

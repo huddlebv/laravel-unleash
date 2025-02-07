@@ -4,10 +4,10 @@
     "type": "library",
     "require": {
         "guzzlehttp/guzzle": "^7",
-        "illuminate/support": "^6|^7|^8|^9|^10.0|^11.0",
-        "illuminate/http": "^6|^7|^8|^9|^10.0|^11.0",
-        "unleash/client": "^1",
-        "symfony/cache": "^5.3|^6.1",
+        "illuminate/support": "^10.0|^11.0",
+        "illuminate/http": "^10.0|^11.0",
+        "unleash/client": "^v2",
+        "symfony/cache": "^6.2|^7.2",
         "psr/cache": "^1.0|^2.0|^3.0",
         "psr/simple-cache": "^1.0|^2.0|^3.0"
     },
@@ -23,11 +23,16 @@
             "email": "jonwebb247@gmail.com"
         }
     ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "extra": {
         "laravel": {
             "providers": [
-                "JWebb\\Unleash\\Providers\\ServiceProvider"
-            ]
+                "JWebb\\Unleash\\ServiceProvider"
+            ],
+            "aliases": {
+                "Unleash": "JWebb\\Unleash\\Facades\\Unleash"
+            }
         }
     }
 }
