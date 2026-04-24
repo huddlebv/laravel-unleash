@@ -4,7 +4,7 @@
     "type": "library",
     "require": {
         "guzzlehttp/guzzle": "^7",
-        "illuminate/support": "^11.0|^12.0",
+        "illuminate/support": "^11.0|^12.0|^13.0",
         "illuminate/http": "^11.0|^12.0",
         "unleash/client": "^v2",
         "symfony/cache": "^6.2|^7.2",
@@ -24,7 +24,7 @@
         },
         {
             "name": "Wessel Verheij",
-            "email": "wessel@plugandpay.com"
+            "email": "info@nightworks.io"
         }
     ],
     "minimum-stability": "dev",
